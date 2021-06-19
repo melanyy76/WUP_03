@@ -1,7 +1,7 @@
 ---
 title: "Alcohol vs Seat choice"
-author: "Your Name"
-date: "Fall 2020"
+author: "melany vasquez"
+date: "June 18,2021"
 output: html_document
 ---
 
@@ -27,18 +27,52 @@ basicCN <- ggplot(davisdata,aes(y=alcohol,x=Seat))
 ```{r}
 basicCN + geom_boxplot()
 ```
-  
-  
+
+ 
+### Plot boxplots
+
+```{r}
+boxplot(alcohol~Seat,data=davisdata)
+```
+It appears that those who sit in the back tend to drink more than those who sit in the front. Those in the middle drink more than those who sit in the front.Over 75% of the people who sit in the back drink more than anyone sitting in the middle and front.
+
 ### get fancy  
+
+```{r}
+basicCN <- ggplot(davisdata,aes(x=Seat,y=alcohol))
+
+basicCN + geom_boxplot()
+```
+As shown in the boxplot, the back row can hold their alcohol more substatially , than the front and middle combined. And we can see that the ones in the middle are only a little more than the front however not as much as the back.
 
 ```{r}
 basicCN + geom_boxplot(notch=TRUE,outlier.color = "red") + stat_boxplot(geom ='errorbar') + labs(title="Fancy notch boxplot \n with 2 lines")
 ```
+It appears that using this data we may be able to reject the null hypothesis. Basing on these boxplots, theres a clear difference in how much people drink depending on their seating position.
+
+The red dots are outliers.Whiskers extend one and a half times the box.
 
 ## Numerical Summarys 
 
+```{r}
+favstats(alcohol~Seat,data=davisdata)
+```
+The back row is drastically different with their mean being 9.6, the middle row being 3.2 and the front row holding the lowest at 1.8.
+
 ## Inferential Tests
+
+```{r}
+model1 <- aov(alcohol~Seat,data=davisdata)
+summary.aov(model1)
+```
+
+we will reject the null hypothesis, but we will seek clarification on which rows were different from other rows.
+
+```{r}
+plot(TukeyHSD(model1))
+```
+Using the Tukey plotbox tool we can tell that the front is different from the back, and the middle is different from the back. However, there is no difference between the middle and the front.
 
 ## Conclusions
 
-
+To conclude, we can reject the null hypothesis. And we can conclude that the means have lead to the conclusion that there is no connection but there are differences in front-back to middle-front. There is a difference in which row I would choose to sit in, and I cannot risk being influenced into drinking alcohol, because of family history of my own. So I will naturally choose to sit in the middle-front , or front row even. 
